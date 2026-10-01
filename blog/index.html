@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>soon™ — Fabian Aprilliano</title>
+<meta name="description" content="oh, hi.">
+<meta name="theme-color" content="#faf9f5">
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem('theme');
+    var d = matchMedia('(prefers-color-scheme:dark)').matches;
+    document.documentElement.dataset.theme = t || (d ? 'dark' : 'light');
+  }catch(e){ document.documentElement.dataset.theme = 'light'; }
+})();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23b45309'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="name">Fabian Aprilliano</span>
+      <span class="sep">/</span>
+      <span class="handle">helscape</span><span class="cursor" aria-hidden="true">_</span>
+    </div>
+    <nav class="nav">
+      <a href="/">← home</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<article class="post">
+  <header class="post-head">
+    <h1>soon™</h1>
+    <p class="post-meta"><time datetime="2026-10-01">2026-10-01</time></p>
+  </header>
+
+  <div class="prose">
+    <p>oh, hi.</p>
+    <p>i should probably write something here soon™. in the meantime, <a href="mailto:aprfabian@gmail.com">email me</a> or look at <a href="/#work">what i've built</a>.</p>
+    <p>— fabian</p>
+  </div>
+</article>
+
+<footer>
+  <span>Fabian Aprilliano Ekaputra</span>
+  <span>Bogor, Indonesia</span>
+</footer>
+
+</main>
+
+<script src="/assets/theme.js"></script>
+</body>
+</html>

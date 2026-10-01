@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fabian Aprilliano — helscape</title>
+<meta name="description" content="Network engineering, infrastructure automation, distributed systems.">
+<meta name="theme-color" content="#faf9f5">
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem('theme');
+    var d = matchMedia('(prefers-color-scheme:dark)').matches;
+    document.documentElement.dataset.theme = t || (d ? 'dark' : 'light');
+  }catch(e){ document.documentElement.dataset.theme = 'light'; }
+})();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23b45309'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/main.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="name">Fabian Aprilliano</span>
+      <span class="sep">/</span>
+      <span class="handle">helscape</span><span class="cursor" aria-hidden="true">_</span>
+    </div>
+    <nav class="nav">
+      <a href="#work">work</a>
+      <a href="#background">background</a>
+      <a href="/blog/">blog</a>
+      <a href="#contact">contact</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <p class="lede">Network engineering, infrastructure automation, distributed systems.</p>
+  <p class="bio">Undergraduate Student in Computer Science at Gunadarma. Production tooling in Go and Rust for network provisioning and P2P membership. 2nd place — LKS Cyber Security &amp; Network Administration (regional), TOEIC 835. Active in competitive programming and homelab/self-hosting.</p>
+</section>
+
+<section id="work">
+  <h2>Selected work</h2>
+
+  <article class="work">
+    <div class="work-head">
+      <h3>Automated Tunnel Provisioning</h3>
+      <span class="lang">Go</span>
+    </div>
+    <p>WireGuard lifecycle orchestration on MikroTik RouterOS v7+ across dozens of sites. Cuts provisioning from tens of minutes to under 15&nbsp;seconds, with atomic rollback so a half-applied config never survives. Closed-source, under NDA.</p>
+  </article>
+
+  <article class="work">
+    <div class="work-head">
+      <h3>Distributed P2P Framework</h3>
+      <span class="lang">Rust</span>
+    </div>
+    <p>SWIM failure detection and UDP gossip over Tokio. Sub-200&nbsp;ms convergence across tens of nodes with O(n&nbsp;log&nbsp;n) message overhead, using bounded piggybacking and a facade-style modular API. Independent research, heading toward my thesis.</p>
+  </article>
+
+  <article class="work">
+    <div class="work-head">
+      <h3>Router Fleet Monitoring</h3>
+      <span class="lang">Python</span>
+    </div>
+    <p>Automated operational monitoring for thousands of regional routers at Diskominfo Kota Depok. Replaced manual logging entirely — 90%+ time saved, zero data errors.</p>
+  </article>
+</section>
+
+<section id="background">
+  <h2>Background</h2>
+  <ul class="rows">
+    <li>
+      <span>Universitas Gunadarma — Computer Science<span class="lbl">Depok, West Java</span></span>
+      <span class="yr">2024 – 2028</span>
+    </li>
+    <li>
+      <span>SMK Negeri 1 Gunung Sindur — Computer &amp; Network Engineering<span class="lbl">Bogor, West Java</span></span>
+      <span class="yr">2021 – 2024</span>
+    </li>
+    <li>
+      <span>CodeFest 4.0 — Chief Organizer &amp; Problem Setter<span class="lbl">Universitas Gunadarma</span></span>
+      <span class="yr">2024</span>
+    </li>
+    <li>
+      <span>Gunadarma Code Week 2.0 — Problem Setter<span class="lbl">Universitas Gunadarma</span></span>
+      <span class="yr">2024</span>
+    </li>
+  </ul>
+</section>
+
+<section id="recognition">
+  <h2>Recognition</h2>
+  <ul class="rows">
+    <li>
+      <span>2nd place — LKS Network Administration<span class="lbl">Bogor Regency</span></span>
+      <span class="yr">2022</span>
+    </li>
+    <li>
+      <span>2nd place — Cyber Security<span class="lbl">Bogor Regency</span></span>
+      <span class="yr">2023</span>
+    </li>
+    <li>
+      <span>2nd in cohort<span class="lbl">SMKN 1 Gunung Sindur</span></span>
+      <span class="yr">2024</span>
+    </li>
+    <li>
+      <span>BONET Industrial Certificate — Very Competent<span class="lbl">WAN Network Security</span></span>
+      <span class="yr">2024</span>
+    </li>
+    <li>
+      <span>TOEIC 835</span>
+      <span class="yr">2024</span>
+    </li>
+  </ul>
+</section>
+
+<section id="tools">
+  <h2>Tools</h2>
+  <dl class="stack">
+    <dt>Languages</dt>
+    <dd>Go, Rust, C, C++, Python, Bash</dd>
+    <dt>Networking</dt>
+    <dd>TCP/IP, WireGuard, SWIM, Gossip Protocol, Routing &amp; Switching, VLAN, NAT, DNS, DHCP, WAN/LAN Troubleshooting, Firewall</dd>
+    <dt>Systems</dt>
+    <dd>Linux, Proxmox VE, Docker, MikroTik, Cisco IOS, VyOS, OPNsense, OpenWrt</dd>
+    <dt>Data &amp; tooling</dt>
+    <dd>PostgreSQL, MySQL, SQLite, Git, Selenium</dd>
+  </dl>
+</section>
+
+<section id="contact">
+  <h2>Elsewhere</h2>
+  <p class="elsewhere">
+    <a href="mailto:aprfabian@gmail.com">aprfabian@gmail.com</a>
+    <a href="https://github.com/helscape">github/helscape</a>
+    <a href="https://linkedin.com/in/fabian-aprilliano">linkedin</a>
+    <a href="/blog/">writing</a>
+  </p>
+</section>
+
+<footer>
+  <span>Fabian Aprilliano Ekaputra</span>
+  <span>Bogor, Indonesia</span>
+</footer>
+
+</main>
+
+<script src="/assets/theme.js"></script>
+</body>
+</html>
