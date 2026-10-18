@@ -193,9 +193,15 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-/** Behind a proxy, the client IP is the first entry of X-Forwarded-For. */
+/** Behind a proxy, the client IP is the first entry of X-Forwarded-For.
+ *  That header is only believed when TRUST_PROXY is set, so a client talking
+ *  to the server directly cannot spoof it to dodge the rate limit. */
 function clientIp(req: Request): string {
-  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+  if (TRUST_PROXY) {
+    const forwarded = req.headers.get("x-forwarded-for");
+    if (forwarded) return forwarded.split(",")[0].trim();
+  }
+  return server.requestIP(req)?.address || "local";
 }
 
 function toComment(row: Record<string, unknown>): Comment {
@@ -336,9 +342,10 @@ async function deleteComment(req: Request, id: number): Promise<Response> {
  * Server
  * ---------------------------------------------------------------------- */
 
+const TRUST_PROXY = /^(1|true|yes)$/i.test(process.env.TRUST_PROXY || "");
 const port = Number(process.env.PORT) || 3000;
 
-Bun.serve({
+const server = Bun.serve({
   port,
   async fetch(req) {
     const url = new URL(req.url);

@@ -172,6 +172,16 @@
         return load();
       })
       .catch(function (err) {
+        // The comment being answered is gone — deleted by a moderator, or
+        // this page is stale. Drop the reply target, refresh the list so the
+        // dead button disappears, and keep what was typed: pressing Post
+        // again sends it as a normal comment instead of failing forever.
+        if (err.message === "invalid parent") {
+          cancelReply();
+          return load().then(function () {
+            setStatus("That comment is gone — press Post comment again to send this on its own.", "error");
+          });
+        }
         setStatus(err.message || "Network error.", "error");
       })
       .then(function () {

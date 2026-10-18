@@ -100,9 +100,10 @@ Public visitors only ever see approved comments. Admin requests carry the
 Bearer`). The moderation UI lives at `/admin/`: paste the token, load by slug
 (blank for all), then hide, unhide or delete.
 
-Deploying needs a process that can reach your database — the Bun server works
-behind a reverse proxy (it reads `X-Forwarded-For` for rate limiting). A
-static-only host cannot serve `/api/comments`.
+Deploying needs a process that can reach your database. Behind a reverse
+proxy, set `TRUST_PROXY=1` so the client IP comes from `X-Forwarded-For` for
+rate limiting; otherwise the socket address is used, and the header is
+ignored. A static-only host cannot serve `/api/comments`.
 
 ## Layout
 
