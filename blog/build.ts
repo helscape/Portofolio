@@ -308,6 +308,7 @@ async function writePost(post: Post, template: string, usedMath: { value: boolea
     description: escapeHtml(post.description || post.title),
     date: post.date,
     isoDate: post.date,
+    slug: escapeHtml(post.slug),
     content,
     mathStyle: hasMath ? `<link rel="stylesheet" href="/assets/katex/katex.min.css">` : "",
   });

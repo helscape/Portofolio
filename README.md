@@ -76,15 +76,47 @@ paragraph and carries a title becomes a captioned `<figure>`:
 ![alt text](./diagram.svg "The caption shown under the image.")
 ```
 
+## Comments
+
+Blog posts end with a threaded comment form. Posts are static files, so the
+form talks to the comments API in `server.ts`, which stores everything in
+MySQL/MariaDB:
+
+| method | path | who | what |
+| ------ | ---- | --- | ---- |
+| `GET` | `/api/comments?slug=<slug>` | anyone | approved comments, flat (thread via `parentId`) |
+| `POST` | `/api/comments` | anyone | add a comment (`slug`, `author`, `body`, optional `parentId`) |
+| `PATCH` | `/api/comments/<id>` | admin | `{approved: bool}` — hide or unhide |
+| `DELETE` | `/api/comments/<id>` | admin | delete a comment and its replies |
+
+Copy `.env.example` to `.env` and start a database (a `docker compose` stack
+with MariaDB works). The table is created — and upgraded — automatically on
+start. Comments turn on when the database is reachable; otherwise
+`/api/comments` answers 503 and the section hides itself, leaving a plain
+static site.
+
+Public visitors only ever see approved comments. Admin requests carry the
+`ADMIN_TOKEN` value as an `x-admin-token` header (or `Authorization:
+Bearer`). The moderation UI lives at `/admin/`: paste the token, load by slug
+(blank for all), then hide, unhide or delete.
+
+Deploying needs a process that can reach your database — the Bun server works
+behind a reverse proxy (it reads `X-Forwarded-For` for rate limiting). A
+static-only host cannot serve `/api/comments`.
+
 ## Layout
 
 ```
 index.html              home page (hand-written)
 404.html                not-found page (hand-written)
-server.ts               static server (Bun)
+server.ts               static server + comments API (Bun)
+.env.example            comments DB + admin token (copy to .env; ignored)
 assets/main.css         all styles, light + dark themes
 assets/theme.js         theme toggle
+assets/comments.js      threaded comment form
+assets/admin.js         comment moderation
 assets/katex/           vendored KaTeX css + woff2 fonts (bun run vendor)
+admin/index.html        comment moderation page
 blog/
   posts/*.md            ← the sources you edit
   posts/<name>/         ← images for a post, copied next to its page

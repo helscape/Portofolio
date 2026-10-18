@@ -319,6 +319,14 @@ ul.rows a.row-link:hover span:first-child{color:var(--accent)}
 }
 .prose th{color:var(--fg);font-weight:600}
 
+/* Embedded frames */
+
+.prose iframe{
+  width:100%;aspect-ratio:16/9;height:auto;
+  border:1px solid var(--rule);border-radius:8px;
+  display:block;margin:0 0 1.5rem;
+}
+
 /* Math (KaTeX) — rendered at build time; the stylesheet is loaded only on
    posts that contain equations. */
 
@@ -327,6 +335,113 @@ ul.rows a.row-link:hover span:first-child{color:var(--accent)}
   margin:1.6rem 0;padding:.25rem 0;
   overflow-x:auto;overflow-y:hidden;
 }
+
+/* Comments */
+
+.comments{
+  margin-top:4.5rem;padding-top:2.5rem;
+  border-top:1px solid var(--rule);
+}
+.comment-list{list-style:none;margin:0 0 2rem;padding:0}
+.comment-list li{padding:1.1rem 0;border-bottom:1px solid var(--rule)}
+.comment-list li:first-child{padding-top:0}
+.comment-list li:last-child{border-bottom:0}
+.comment-meta{
+  margin:0 0 .35rem;
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.82rem;color:var(--faint);letter-spacing:.01em;
+}
+.comment-meta .who{color:var(--fg);font-weight:600}
+.comment-body{
+  margin:0;font-size:1.02rem;line-height:1.7;color:var(--muted);
+  white-space:pre-wrap;overflow-wrap:anywhere;
+}
+.comments-empty{margin:0 0 2rem;color:var(--faint);font-size:.95rem}
+
+.comment-form .field{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.1rem}
+.comment-form label{
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.8rem;color:var(--muted);letter-spacing:.02em;
+}
+.comment-form input[type="text"],
+.comment-form input[type="password"],
+.comment-form textarea{
+  font:inherit;font-size:1rem;line-height:1.5;
+  color:var(--fg);background:transparent;
+  border:1px solid var(--rule);border-radius:8px;
+  padding:.6rem .8rem;width:100%;
+  transition:border-color .15s ease;
+}
+.comment-form textarea{resize:vertical;min-height:6.5rem}
+.comment-form input:focus,.comment-form textarea:focus{
+  outline:2px solid var(--accent);outline-offset:1px;border-color:transparent;
+}
+.comment-form button{
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.9rem;letter-spacing:.02em;
+  color:var(--bg);background:var(--accent);
+  border:0;border-radius:8px;padding:.6rem 1.3rem;cursor:pointer;
+  transition:filter .15s ease;
+}
+.comment-form button:hover{filter:brightness(1.08)}
+.comment-form button:disabled{opacity:.55;cursor:default}
+.comment-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-status{
+  margin:.9rem 0 0;min-height:1.2em;
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.82rem;color:var(--faint);
+}
+.form-status[data-state="error"]{color:#c0392b}
+.form-status[data-state="ok"]{color:var(--accent)}
+
+/* threaded replies */
+
+.comment-list .comment-list{
+  margin:.9rem 0 0;padding-left:1.1rem;
+  border-left:2px solid var(--rule);
+}
+.comment-reply{
+  font:inherit;font-size:inherit;color:var(--muted);
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  letter-spacing:.02em;
+  background:none;border:0;padding:0;cursor:pointer;
+  border-bottom:1px solid var(--faint);
+}
+.comment-reply:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.reply-to{
+  display:flex;align-items:baseline;gap:.6rem;
+  margin:0 0 1rem;
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.82rem;color:var(--muted);
+}
+.reply-to[hidden]{display:none}
+.reply-to [data-reply-name]{color:var(--fg);font-weight:600}
+.reply-to button{
+  font:inherit;color:var(--faint);background:none;border:0;padding:0;
+  cursor:pointer;border-bottom:1px solid var(--rule);
+}
+.reply-to button:hover{color:var(--accent)}
+
+/* moderation */
+
+.comment-actions{display:flex;gap:.6rem;margin-top:.6rem}
+.comment-actions .action{
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.78rem;letter-spacing:.02em;
+  color:var(--muted);background:none;
+  border:1px solid var(--rule);border-radius:6px;
+  padding:.25rem .65rem;cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+.comment-actions .action:hover{color:var(--accent);border-color:var(--accent)}
+.comment-actions .action.danger:hover{color:#c0392b;border-color:#c0392b}
+.badge{
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+  border:1px solid var(--rule);border-radius:4px;
+  padding:.05rem .35rem;color:var(--faint);
+}
+.badge.hidden{color:#c0392b;border-color:#c0392b}
 
 /* Footer */
 

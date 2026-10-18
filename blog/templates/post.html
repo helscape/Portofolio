@@ -51,6 +51,37 @@
   </div>
 </article>
 
+<section class="comments" id="comments" data-slug="{{slug}}">
+  <h2>Comments</h2>
+
+  <ol class="comment-list" data-comment-list></ol>
+  <p class="comments-empty" data-comment-empty hidden>No comments yet. Say something.</p>
+
+  <form class="comment-form" data-comment-form>
+    <p class="reply-to" data-reply-to hidden>
+      Replying to <span data-reply-name></span>
+      <button type="button" data-reply-cancel>cancel</button>
+    </p>
+    <input type="hidden" name="parentId" value="">
+
+    <div class="field">
+      <label for="c-author">Name</label>
+      <input id="c-author" name="author" type="text" maxlength="80" required autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="c-body">Comment</label>
+      <textarea id="c-body" name="body" rows="4" maxlength="2000" required></textarea>
+    </div>
+    <!-- honeypot: hidden from people, tempting to bots -->
+    <div class="hp" aria-hidden="true">
+      <label for="c-website">Website</label>
+      <input id="c-website" name="website" type="text" tabindex="-1" autocomplete="off">
+    </div>
+    <button type="submit">Post comment</button>
+    <p class="form-status" data-comment-status role="status"></p>
+  </form>
+</section>
+
 <footer>
   <span>Fabian Aprilliano Ekaputra</span>
   <span>Bogor, Indonesia</span>
@@ -59,5 +90,6 @@
 </main>
 
 <script src="/assets/theme.js"></script>
+<script src="/assets/comments.js"></script>
 </body>
 </html>

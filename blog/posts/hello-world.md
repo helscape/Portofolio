@@ -56,6 +56,13 @@ fn main() {
 | the cloud is just someone else's computer | 100% | the bill |
 | i'll fix it later | 0% | git log |
 
+## map
+
+and because the assignment also wanted a frame, here's an `<iframe>` — a map
+of bogor, where i live, which is somehow more useful than the table:
+
+<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=106.73%2C-6.66%2C106.88%2C-6.53&amp;layer=mapnik&amp;marker=-6.5971%2C106.806" title="Map of Bogor, Indonesia" loading="lazy"></iframe>
+
 ## picture
 
 here's the whole pipeline, as a diagram, because flowcharts are cheaper
