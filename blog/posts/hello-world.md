@@ -1,45 +1,70 @@
 ---
-title: Hello
+title: Hello, World
 date: 2026-10-01
-description: The first post. A placeholder, mostly.
+description: A first post that exists mainly to prove the pipeline works. It does. Probably.
 ---
 
-oh, hi.
+so this is the blog now. i built a generator so i could finally "focus on
+writing", and i'm using it to write about the fact that the generator
+works. peak output. peak engineering.
 
-This is a placeholder post — it exists so the blog pipeline has something
-to render. Replace it by editing `blog/posts/hello-world.md`, or delete
-the file and run `bun run build` again.
+treat this as a smoke test. if the math below looks like math, the code
+looks like code, and the picture isn't a broken-image icon, then the whole
+thing is glued together correctly and i can go back to breaking production
+somewhere else.
 
-A quick tour of what the Markdown renderer handles:
+## the markdown still works
 
-- **bold**, *italic*, and `inline code`
-- links, like [the home page](/#work)
-- fenced code blocks:
+you get **bold**, *italic*, `inline code`, and [links that go
+somewhere](/#work). nothing surprising in here yet.
 
-```go
-func main() {
-	fmt.Println("hello, world")
+## math, allegedly
+
+there are two hard problems in computer science: cache invalidation,
+naming things, and off-by-one errors.
+
+$$
+\underbrace{n}_{\text{slept}} + \underbrace{1}_{\text{more}} = n + 1
+$$
+
+inline, the complexity of reading your own code six months later is
+$O(\text{nope})$, and the probability that a given bug is DNS tends toward
+$\lim_{t \to \infty} P(\text{dns}) = 1$.
+
+(confirming that $\sum_{i=1}^{n} \text{coffee}_i$ keeps its underscores —
+it does. this is the entire feature and it works.)
+
+## code, because of course
+
+```rust
+// works on my machine ™
+fn main() {
+    let bugs = ["it's DNS", "off by one", "the cache"];
+    for bug in bugs.iter().cycle() {
+        println!("blaming: {bug}");
+    }
 }
 ```
 
-> Blockquotes too, if you're into that.
+> it's not a bug, it's an undocumented feature with a different name.
 
-## Math
+## a table nobody asked for
 
-Inline math, like $E = mc^2$ or $O(n \log n)$, and a display equation:
+| claim | confidence | source |
+| ----- | ---------- | ------ |
+| it's DNS | 99% | vibes |
+| the cloud is just someone else's computer | 100% | the bill |
+| i'll fix it later | 0% | git log |
 
-$$
-\int_0^1 x^2\,dx = \frac{1}{3}
-$$
+## picture
 
-Underscores and backslashes survive because equations are pulled out before
-Markdown runs: $\sum_{i=1}^{n} a_i$ renders intact.
+here's the whole pipeline, as a diagram, because flowcharts are cheaper
+than tests:
 
-## Images
+![A placeholder diagram](./diagram.svg "Figure 1 — source, build, page. that's the architecture.")
 
-Images next to this file are copied next to the page, so a relative path
-just works. Give one a title and it becomes a captioned figure:
+that's the post. if you're reading this in production then the smoke test
+passed, and i've already wandered off to configure something with more
+YAML in it.
 
-![A placeholder diagram](./diagram.svg "Figure 1 — source, build, page.")
-
-That's it. Delete this file and write something real.
+— fabian

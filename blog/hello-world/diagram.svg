@@ -1,13 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" role="img" aria-label="placeholder diagram">
-  <rect width="640" height="200" fill="none"/>
-  <g fill="none" stroke="#b45309" stroke-width="2">
+  <style>
+    .dg-line{fill:none;stroke:var(--accent,#b45309);stroke-width:2}
+    .dg-text{fill:var(--fg,#1c1a17);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;text-anchor:middle}
+  </style>
+  <g class="dg-line">
     <rect x="40" y="70" width="120" height="60" rx="8"/>
     <rect x="260" y="70" width="120" height="60" rx="8"/>
     <rect x="480" y="70" width="120" height="60" rx="8"/>
     <path d="M160 100h100M380 100h100"/>
     <path d="M250 90l10 10-10 10M470 90l10 10-10 10"/>
   </g>
-  <g fill="currentColor" font-family="ui-monospace,monospace" font-size="15" text-anchor="middle">
+  <g class="dg-text">
     <text x="100" y="106">source</text>
     <text x="320" y="106">build</text>
     <text x="540" y="106">page</text>

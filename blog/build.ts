@@ -8,9 +8,10 @@
  *   blog/index.html          the index, newest first
  *
  * Images that live next to a post (blog/posts/<name>/…) are copied into the
- * post's output directory, so `![](diagram.svg)` just works. An image whose
- * paragraph contains only the image and that has a title becomes a <figure>
- * with the title as its <figcaption>.
+ * post's output directory, so `![](diagram.svg)` just works. A local SVG is
+ * inlined so it follows the page theme. An image whose paragraph contains
+ * only the image and that has a title becomes a <figure> with the title as
+ * its <figcaption>.
  *
  * Math is rendered to static HTML at build time with KaTeX ($…$ inline,
  * $$…$$ or \[…\] display, \(…\) inline). It is pulled out before Markdown
@@ -142,18 +143,66 @@ function injectMath(html: string, blocks: MathBlock[]): string {
     .replace(/@@KATEX:(\d+)@@/g, (_m, n: string) => blocks[Number(n)]?.html ?? "");
 }
 
-/** Lazy-load images; turn a title-bearing standalone image into a figure. */
-function enhanceImages(html: string): string {
-  html = html.replace(/<p>\s*(<img\b[^>]*>)\s*<\/p>/g, (_m, img: string) => {
-    const title = /\btitle="([^"]*)"/.exec(img)?.[1];
-    const lazy = img
-      .replace(/\s*\btitle="[^"]*"/, "")
-      .replace(/^<img\b/, '<img loading="lazy" decoding="async"');
-    return title
-      ? `<figure>${lazy}<figcaption>${title}</figcaption></figure>`
-      : `<p>${lazy}</p>`;
-  });
-  return html.replace(/<img\b(?! loading=)/g, '<img loading="lazy" decoding="async"');
+/** Read an attribute value out of a rendered tag. */
+function attr(tag: string, name: string): string {
+  return new RegExp(`\\b${name}="([^"]*)"`).exec(tag)?.[1] ?? "";
+}
+
+/** Strip the prolog/doctype/comments so an SVG can be inlined as host HTML. */
+function inlineSvg(raw: string): string {
+  return raw
+    .replace(/<\?xml[\s\S]*?\?>/g, "")
+    .replace(/<!DOCTYPE[\s\S]*?>/gi, "")
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .trim();
+}
+
+/**
+ * Turn an image that fills its own paragraph into a block. A local SVG is
+ * inlined so it inherits the page's theme colors (an <img>-embedded SVG is
+ * a separate document, where currentColor and custom properties can't
+ * reach). Everything else is lazy-loaded; a title becomes a caption.
+ */
+async function blockImage(img: string, dir: string, cache: Map<string, string>): Promise<string> {
+  const src = attr(img, "src");
+  const alt = attr(img, "alt");
+  const title = attr(img, "title");
+  const bare = img.replace(/\s*\btitle="[^"]*"/, "");
+
+  const rel = src.replace(/^\.\//, "");
+  if (/\.svg$/i.test(rel) && !rel.includes("..") && !rel.startsWith("/")) {
+    let svg = cache.get(rel);
+    if (svg === undefined) {
+      const file = Bun.file(`${dir}/${rel}`);
+      svg = (await file.exists()) ? inlineSvg(await file.text()) : "";
+      cache.set(rel, svg);
+    }
+    if (svg) {
+      if (alt && !/\baria-label=/.test(svg)) {
+        svg = svg.replace(/<svg\b/, `<svg role="img" aria-label="${alt}"`);
+      }
+      return title ? `<figure>${svg}<figcaption>${title}</figcaption></figure>` : svg;
+    }
+  }
+
+  const lazy = bare.replace(/^<img\b/, '<img loading="lazy" decoding="async"');
+  return title ? `<figure>${lazy}<figcaption>${title}</figcaption></figure>` : `<p>${lazy}</p>`;
+}
+
+/** Rewrite standalone images; lazy-load any that remain inline. */
+async function processImages(html: string, dir: string): Promise<string> {
+  const cache = new Map<string, string>();
+  const re = /<p>\s*(<img\b[^>]*>)\s*<\/p>/g;
+  let out = "";
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html))) {
+    out += html.slice(last, m.index);
+    out += await blockImage(m[1], dir, cache);
+    last = re.lastIndex;
+  }
+  out += html.slice(last);
+  return out.replace(/<img\b(?! loading=)/g, '<img loading="lazy" decoding="async"');
 }
 
 /* ---------------------------------------------------------------------- *
@@ -253,7 +302,7 @@ async function writePost(post: Post, template: string, usedMath: { value: boolea
   const hasMath = blocks.length > 0;
   usedMath.value ||= hasMath;
 
-  const content = enhanceImages(injectMath(Bun.markdown.html(text), blocks));
+  const content = await processImages(injectMath(Bun.markdown.html(text), blocks), dir);
   const html = render(template, {
     title: escapeHtml(post.title),
     description: escapeHtml(post.description || post.title),

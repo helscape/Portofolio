@@ -304,6 +304,20 @@ ul.rows a.row-link:hover span:first-child{color:var(--accent)}
   font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
   font-size:.85rem;color:var(--faint);letter-spacing:.01em;
 }
+/* Local SVGs are inlined at build time so they scale and follow the theme. */
+.prose figure svg{width:100%;height:auto;display:block}
+
+/* Tables */
+
+.prose table{
+  width:100%;border-collapse:collapse;
+  margin:0 0 1.5rem;font-size:1rem;
+}
+.prose th,.prose td{
+  border:1px solid var(--rule);
+  padding:.5rem .8rem;text-align:left;
+}
+.prose th{color:var(--fg);font-weight:600}
 
 /* Math (KaTeX) — rendered at build time; the stylesheet is loaded only on
    posts that contain equations. */
