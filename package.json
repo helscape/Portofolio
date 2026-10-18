@@ -1,0 +1,13 @@
+{
+  "name": "helscape-portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Static portfolio site for Fabian Aprilliano (helscape).",
+  "scripts": {
+    "start": "bun run server.ts",
+    "dev": "bun --watch server.ts"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
