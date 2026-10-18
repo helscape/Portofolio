@@ -221,7 +221,8 @@ async function listComments(url: URL, req: Request): Promise<Response> {
   const slug = url.searchParams.get("slug");
   const admin = isAdmin(req);
 
-  if (slug === null && !admin) return json({ error: "a slug is required" }, 400);
+  // no slug means "every post", which is moderation-only
+  if (slug === null && !admin) return json({ error: "unauthorized" }, 401);
   if (slug !== null && !SLUG_RE.test(slug)) return json({ error: "invalid slug" }, 400);
 
   // admins see hidden comments; everyone else sees only approved ones
