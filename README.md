@@ -95,15 +95,58 @@ start. Comments turn on when the database is reachable; otherwise
 `/api/comments` answers 503 and the section hides itself, leaving a plain
 static site.
 
-Public visitors only ever see approved comments. Admin requests carry the
-`ADMIN_TOKEN` value as an `x-admin-token` header (or `Authorization:
-Bearer`). The moderation UI lives at `/admin/`: paste the token, load by slug
-(blank for all), then hide, unhide or delete.
-
 Deploying needs a process that can reach your database. Behind a reverse
 proxy, set `TRUST_PROXY=1` so the client IP comes from `X-Forwarded-For` for
 rate limiting; otherwise the socket address is used, and the header is
 ignored. A static-only host cannot serve `/api/comments`.
+
+### Moderating
+
+There is no account and no login. Moderation is gated by one shared secret,
+`ADMIN_TOKEN`, sent as a request header. Whoever holds it can hide, unhide
+and delete comments; without it the API answers 401 and hidden comments stay
+hidden. The `/admin/` page itself is public — it is only a form, and the
+token is the sole thing that grants anything.
+
+Generate one and store it in `.env` (which is gitignored; `.env.example`
+ships a placeholder):
+
+```sh
+printf 'ADMIN_TOKEN=%s\n' "$(openssl rand -hex 32)" >> .env
+bun dev   # restart so the server picks it up
+```
+
+Use at least 32 random bytes. A memorable passphrase is not enough: the
+token is checked on every request and is not rate limited per guess.
+
+Then moderate in the browser at **http://localhost:3000/admin/**:
+
+1. Paste the token into **Admin token**. It is kept in that browser's
+   `localStorage`, so you only paste it once per browser.
+2. Type a post slug, or leave it **blank to load every post**.
+3. Press **Load**, then **Hide** / **Unhide** / **Delete** any comment.
+   Deleting a comment also deletes its replies.
+
+The same thing from a shell:
+
+```sh
+TOKEN=$(grep '^ADMIN_TOKEN=' .env | cut -d= -f2)
+
+# every comment on a post, including hidden ones
+curl -s "localhost:3000/api/comments?slug=hello-world" -H "x-admin-token: $TOKEN"
+
+# hide comment 4 …
+curl -s -X PATCH localhost:3000/api/comments/4 \
+  -H "x-admin-token: $TOKEN" -H 'content-type: application/json' \
+  -d '{"approved":false}'
+
+# … then delete it and its replies
+curl -s -X DELETE localhost:3000/api/comments/4 -H "x-admin-token: $TOKEN"
+```
+
+`Authorization: Bearer <token>` works anywhere `x-admin-token` does. To
+rotate the secret, change `ADMIN_TOKEN` and restart; the old value stops
+working at once.
 
 ## Layout
 
