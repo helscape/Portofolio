@@ -126,12 +126,19 @@ ${urls}
 `;
 }
 
-/** Crawl everything except the moderation page, and point at the sitemap. */
+/**
+ * Crawl the site, but not the parts that exist only because the deployed
+ * output directory is the repository root: the generator's sources and the
+ * moderation page. This is about tidy search results, not secrecy — the
+ * repository is public either way.
+ */
 export function robots(): string {
   return `# ${GENERATED}
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /blog/posts/
+Disallow: /blog/templates/
 
 Sitemap: ${absolute("/sitemap.xml")}
 `;

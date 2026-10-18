@@ -2,5 +2,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /blog/posts/
+Disallow: /blog/templates/
 
 Sitemap: https://helscape-portofolio.vercel.app/sitemap.xml
