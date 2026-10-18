@@ -2,7 +2,8 @@
  * Static host, dev server, and comments API.
  *
  * The static side mirrors how Vercel serves the site: files from disk,
- * directory index resolution, and 404.html for unknown paths.
+ * directory index resolution, and 404.html for unknown paths. The security
+ * headers come out of vercel.json, so local and deployed responses match.
  *
  * Comments are backed by MySQL/MariaDB and turn on when the DB_* environment
  * variables are present (Bun loads .env automatically); without them the
@@ -35,6 +36,59 @@ const MIME: Record<string, string> = {
   ".txt": "text/plain; charset=utf-8",
   ".xml": "application/xml",
 };
+
+/* ---------------------------------------------------------------------- *
+ * Response headers
+ * ---------------------------------------------------------------------- */
+
+/** Headers that belong in production only: a long cache would hide local
+ *  edits, and HSTS would pin http://localhost to https in the browser. */
+const LOCAL_SKIP = new Set(["cache-control", "strict-transport-security"]);
+
+interface HeaderRule {
+  test: RegExp;
+  headers: Record<string, string>;
+}
+
+/** vercel.json sources are path-to-regexp. The only shape used here is
+ *  "/(.*)":/"/assets/(.*)", so translate that subset and escape the rest. */
+function toRegExp(source: string): RegExp {
+  const pattern = source
+    .split(/(\(\.\*\))/)
+    .map((part) => (part === "(.*)" ? ".*" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")))
+    .join("");
+  return new RegExp(`^${pattern}$`);
+}
+
+async function loadHeaderRules(): Promise<HeaderRule[]> {
+  const file = Bun.file(`${ROOT}/vercel.json`);
+  if (!(await file.exists())) return [];
+
+  const config = (await file.json()) as {
+    headers?: { source: string; headers: { key: string; value: string }[] }[];
+  };
+
+  return (config.headers ?? []).map((rule) => ({
+    test: toRegExp(rule.source),
+    headers: Object.fromEntries(
+      rule.headers
+        .filter((header) => !LOCAL_SKIP.has(header.key.toLowerCase()))
+        .map((header) => [header.key, header.value]),
+    ),
+  }));
+}
+
+/** The security headers live in vercel.json and are reused here, so what
+ *  you test locally is what Vercel serves. */
+const HEADER_RULES = await loadHeaderRules();
+
+function headersFor(pathname: string): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const rule of HEADER_RULES) {
+    if (rule.test.test(pathname)) Object.assign(out, rule.headers);
+  }
+  return out;
+}
 
 /** Map a URL path to a file on disk, or null if nothing matches. */
 async function resolve(pathname: string): Promise<string | null> {
@@ -70,7 +124,12 @@ function fileResponse(rel: string, status = 200): Response {
   const type = MIME[ext] || file.type || "application/octet-stream";
   return new Response(file, {
     status,
-    headers: { "content-type": type, "cache-control": "no-cache" },
+    headers: {
+      "content-type": type,
+      // dev: always revalidate so edits appear on a plain refresh
+      "cache-control": "no-cache",
+      ...headersFor(`/${rel}`),
+    },
   });
 }
 
@@ -189,7 +248,11 @@ function isAdmin(req: Request): boolean {
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+      ...headersFor("/api/"),
+    },
   });
 }
 
@@ -368,7 +431,7 @@ const server = Bun.serve({
     if (req.method !== "GET" && req.method !== "HEAD") {
       return new Response("Method Not Allowed", {
         status: 405,
-        headers: { allow: "GET, HEAD" },
+        headers: { allow: "GET, HEAD", ...headersFor(url.pathname) },
       });
     }
 
@@ -381,7 +444,7 @@ const server = Bun.serve({
     }
     return new Response("Not Found", {
       status: 404,
-      headers: { "content-type": "text/plain; charset=utf-8" },
+      headers: { "content-type": "text/plain; charset=utf-8", ...headersFor(url.pathname) },
     });
   },
 });

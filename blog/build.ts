@@ -6,6 +6,9 @@
  *
  *   blog/<slug>/index.html   one page per post
  *   blog/index.html          the index, newest first
+ *   blog/feed.xml            RSS feed of every post
+ *   sitemap.xml              every page, at the site root
+ *   robots.txt               crawl rules, at the site root
  *
  * Images that live next to a post (blog/posts/<name>/…) are copied into the
  * post's output directory, so `![](diagram.svg)` just works. A local SVG is
@@ -32,8 +35,10 @@
 
 import { cp, mkdir, rm, stat } from "node:fs/promises";
 import katex from "katex";
+import { absolute, robots, rss, sitemap, type FeedItem } from "./site.ts";
 
 const ROOT = import.meta.dir; // .../blog
+const SITE_ROOT = `${ROOT}/..`; // the tree the static host serves
 const POSTS = `${ROOT}/posts`;
 const TEMPLATES = `${ROOT}/templates`;
 const KATEX_CSS = `${ROOT}/../assets/katex/katex.min.css`;
@@ -309,12 +314,31 @@ async function writePost(post: Post, template: string, usedMath: { value: boolea
     date: post.date,
     isoDate: post.date,
     slug: escapeHtml(post.slug),
+    canonical: absolute(`/blog/${post.slug}/`),
+    type: "article",
     content,
     mathStyle: hasMath ? `<link rel="stylesheet" href="/assets/katex/katex.min.css">` : "",
   });
 
   await Bun.write(`${dir}/index.html`, `${MARKER}\n${html}`);
   console.log(`  + blog/${post.slug}/${hasMath ? " (math)" : ""}`);
+}
+
+/** Write sitemap.xml, robots.txt and the RSS feed from the post list. */
+async function writeDiscovery(posts: Post[]): Promise<void> {
+  const items: FeedItem[] = posts.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    date: post.date,
+    description: post.description,
+  }));
+
+  await Bun.write(`${SITE_ROOT}/sitemap.xml`, sitemap(items));
+  await Bun.write(`${SITE_ROOT}/robots.txt`, robots());
+  await Bun.write(`${ROOT}/feed.xml`, rss(items));
+
+  const plural = items.length === 1 ? "y" : "ies";
+  console.log(`  + sitemap.xml, robots.txt, blog/feed.xml (${items.length} entr${plural})`);
 }
 
 async function build(): Promise<void> {
@@ -330,10 +354,16 @@ async function build(): Promise<void> {
     await writePost(post, postTpl, usedMath);
   }
 
-  const index = render(indexTpl, { posts: indexList(posts), count: String(posts.length) });
+  const index = render(indexTpl, {
+    posts: indexList(posts),
+    count: String(posts.length),
+    canonical: absolute("/blog/"),
+    type: "website",
+  });
   await Bun.write(`${ROOT}/index.html`, `${MARKER}\n${index}`);
   console.log(`  + blog/index.html (${posts.length} post${posts.length === 1 ? "" : "s"})`);
 
+  await writeDiscovery(posts);
   await pruneStale(new Set(posts.map((p) => p.slug)));
 
   if (usedMath.value && !(await Bun.file(KATEX_CSS).exists())) {
