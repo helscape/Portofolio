@@ -294,6 +294,26 @@ ul.rows a.row-link:hover span:first-child{color:var(--accent)}
 }
 .prose a:hover{color:var(--accent)}
 
+/* Images and figures */
+
+.prose img{max-width:100%;height:auto;border-radius:8px}
+.prose figure{margin:2rem 0}
+.prose figure img{display:block;margin:0 auto}
+.prose figcaption{
+  margin-top:.7rem;text-align:center;
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:.85rem;color:var(--faint);letter-spacing:.01em;
+}
+
+/* Math (KaTeX) — rendered at build time; the stylesheet is loaded only on
+   posts that contain equations. */
+
+.prose .katex{font-size:1.05em}
+.prose .katex-display{
+  margin:1.6rem 0;padding:.25rem 0;
+  overflow-x:auto;overflow-y:hidden;
+}
+
 /* Footer */
 
 footer{

@@ -4,10 +4,16 @@
   "type": "module",
   "description": "Static portfolio site for Fabian Aprilliano (helscape).",
   "scripts": {
-    "start": "bun run server.ts",
-    "dev": "bun --watch server.ts"
+    "build": "bun run blog/build.ts",
+    "new": "bun run blog/new.ts",
+    "vendor": "bun run blog/vendor-katex.ts",
+    "start": "bun run build && bun run server.ts",
+    "dev": "bun run build && bun --watch server.ts"
   },
   "engines": {
     "bun": ">=1.0.0"
+  },
+  "dependencies": {
+    "katex": "^0.19.0"
   }
 }
