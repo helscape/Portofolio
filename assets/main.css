@@ -113,7 +113,12 @@ a:hover{color:var(--accent);border-bottom-color:var(--accent)}
 }
 .nav a:hover{color:var(--accent)}
 @media (max-width:640px){
-  .nav a{display:none}
+  /* Wrap the bar onto a second row rather than dropping the links: hiding
+     them left no way to reach the rest of the site. The nav takes a full
+     row of its own and the toggle keeps the right corner. */
+  .topbar-inner{flex-wrap:wrap;row-gap:.55rem;padding-block:.95rem}
+  .nav{flex:1 1 100%;flex-wrap:wrap;gap:.4rem 1.05rem;font-size:.85rem}
+  .nav .toggle{margin-left:auto}
   .brand{font-size:1.02rem}
   .brand .handle{font-size:.92rem}
 }
