@@ -13,8 +13,8 @@
  */
 
 const STORAGE_KEY = 'theme';
-const CHROME_LIGHT = '#faf9f5';
-const CHROME_DARK = '#131211';
+const CHROME_LIGHT = '#e1dbd1';
+const CHROME_DARK = '#1b1b1b';
 
 /** @returns {'light' | 'dark'} the currently applied theme. */
 function currentTheme() {

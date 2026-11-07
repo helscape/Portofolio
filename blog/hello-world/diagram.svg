@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" role="img" aria-label="placeholder diagram">
   <style>
-    .dg-line{fill:none;stroke:var(--accent,#b45309);stroke-width:2}
-    .dg-text{fill:var(--fg,#1c1a17);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;text-anchor:middle}
+    .dg-line{fill:none;stroke:var(--accent,#8e3f33);stroke-width:2}
+    .dg-text{fill:var(--fg,#2b2b2b);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;text-anchor:middle}
   </style>
   <g class="dg-line">
     <rect x="40" y="70" width="120" height="60" rx="8"/>
