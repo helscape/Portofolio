@@ -7,18 +7,18 @@
  * persists the choice to localStorage, and keeps the browser chrome
  * color (meta[name="theme-color"]) in sync.
  *
- * The stored value overrides prefers-color-scheme on subsequent
- * visits. Storage failures (private mode, disabled cookies) are
- * ignored — the toggle still works, it just doesn't persist.
+ * The stored value overrides the dark default on subsequent visits.
+ * Storage failures (private mode, disabled cookies) are ignored — the
+ * toggle still works, it just doesn't persist.
  */
 
 const STORAGE_KEY = 'theme';
-const CHROME_LIGHT = '#faf9f5';
-const CHROME_DARK = '#131211';
+const CHROME_LIGHT = '#e1dbd1';
+const CHROME_DARK = '#1b1b1b';
 
 /** @returns {'light' | 'dark'} the currently applied theme. */
 function currentTheme() {
-  return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
 }
 
 /**

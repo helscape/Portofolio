@@ -1,33 +1,47 @@
 /*
  * Site-wide styles.
  *
- * Two color themes live as custom properties on :root and
- * [data-theme="dark"]. Every other rule consumes those properties and
- * stays theme-agnostic. The active theme is set by an inline snippet
- * in <head> before first paint; assets/theme.js handles user-initiated
- * changes afterward.
+ * Two color themes live as custom properties on :root/[data-theme="dark"]
+ * and [data-theme="light"]. Every other rule consumes those properties
+ * and stays theme-agnostic. Dark is the default when no attribute is
+ * set. The active theme is chosen by an inline snippet in <head> before
+ * first paint; assets/theme.js handles user-initiated changes afterward.
+ *
+ * The palettes follow GMK Olivia++: the light theme takes the light
+ * kit's cream alphas and charcoal modifiers, the dark theme the dark
+ * kit's slate-black keys with pink legends.
+ *
+ *   CP            #e1dbd1  cream alphas
+ *   RAL 000 20 00 #2b2b2b  slate-black modifiers
+ *   RAL 040 80 20 #f1beb0  Olivia pink
+ *
+ * The light accent is a darker pink derived from RAL 040 80 20 so
+ * text stays legible on CP cream; the genuine pink is kept for flat
+ * details such as selections and section rules.
  *
  * Layout is a single column capped at 780px. Below 640px the top bar
  * collapses its navigation links; the brand and theme toggle remain.
  */
 
-:root,[data-theme="light"]{
-  --bg:#faf9f5;
-  --fg:#1c1a17;
-  --muted:#6f6a62;
-  --faint:#a39d93;
-  --accent:#b45309;
-  --rule:#e8e4db;
-  --bar:rgba(250,249,245,.82);
+:root,[data-theme="dark"]{
+  --bg:#1b1b1b;
+  --fg:#e1dbd1;
+  --muted:#aba298;
+  --faint:#746c62;
+  --accent:#f1beb0;
+  --accent-soft:#f1beb0;
+  --rule:#2b2b2b;
+  --bar:rgba(27,27,27,.78);
 }
-[data-theme="dark"]{
-  --bg:#131211;
-  --fg:#e8e6e1;
-  --muted:#8f8a82;
-  --faint:#5a554f;
-  --accent:#f0a860;
-  --rule:#26241f;
-  --bar:rgba(19,18,17,.78);
+[data-theme="light"]{
+  --bg:#e1dbd1;
+  --fg:#2b2b2b;
+  --muted:#5e5851;
+  --faint:#8f877c;
+  --accent:#a34046;
+  --accent-soft:#f1beb0;
+  --rule:#c9c1b5;
+  --bar:rgba(225,219,209,.82);
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -44,7 +58,8 @@ body{
   text-rendering:optimizeLegibility;
   transition:background .25s ease,color .25s ease;
 }
-::selection{background:var(--accent);color:var(--bg)}
+/* Olivia pink is light, so selected text always uses charcoal. */
+::selection{background:var(--accent-soft);color:#2b2b2b}
 
 a{
   color:inherit;
@@ -146,7 +161,7 @@ main{
 .lede{
   font-size:clamp(1.6rem,3.8vw,2rem);
   line-height:1.4;letter-spacing:-.015em;
-  margin:0 0 1.5rem;font-weight:400;color:var(--fg);
+  margin:0 0 1.5rem;font-weight:400;color:var(--accent);
   text-wrap:balance;
 }
 .bio{
@@ -161,10 +176,10 @@ section:first-of-type{margin-top:0}
 h2{
   font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
   font-size:.85rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--faint);margin:0 0 1.5rem;
+  color:var(--accent);margin:0 0 1.5rem;
   display:flex;align-items:center;gap:1rem;
 }
-h2::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2::after{content:"";flex:1;height:1px;background:var(--accent-soft)}
 
 /* Work items */
 
@@ -181,7 +196,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule)}
 }
 .work .lang{
   font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
-  font-size:.82rem;color:var(--faint);letter-spacing:.02em;white-space:nowrap;
+  font-size:.82rem;color:var(--accent);letter-spacing:.02em;white-space:nowrap;
 }
 .work p{margin:0;font-size:1.06rem;color:var(--muted);line-height:1.7}
 
@@ -197,7 +212,7 @@ ul.rows li{
 ul.rows li:last-child{border-bottom:0}
 ul.rows li .yr{
   font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
-  font-size:.85rem;color:var(--faint);white-space:nowrap;
+  font-size:.85rem;color:var(--accent);white-space:nowrap;
 }
 ul.rows li .lbl{
   display:block;color:var(--muted);font-size:.92rem;
