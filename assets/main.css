@@ -160,7 +160,7 @@ main{
 .lede{
   font-size:clamp(1.6rem,3.8vw,2rem);
   line-height:1.4;letter-spacing:-.015em;
-  margin:0 0 1.5rem;font-weight:400;color:var(--fg);
+  margin:0 0 1.5rem;font-weight:400;color:var(--accent);
   text-wrap:balance;
 }
 .bio{
@@ -178,11 +178,7 @@ h2{
   color:var(--accent);margin:0 0 1.5rem;
   display:flex;align-items:center;gap:1rem;
 }
-h2::before{
-  content:"";flex:0 0 auto;width:.5rem;height:.5rem;border-radius:2px;
-  background:var(--accent-soft);
-}
-h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--accent-soft),var(--rule) 40%)}
+h2::after{content:"";flex:1;height:1px;background:var(--rule)}
 
 /* Work items */
 
@@ -195,7 +191,7 @@ h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--ac
 }
 .work h3{
   font-size:1.18rem;font-weight:600;margin:0;line-height:1.35;
-  letter-spacing:-.008em;
+  letter-spacing:-.008em;color:var(--accent);
 }
 .work .lang{
   font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
@@ -283,7 +279,7 @@ ul.rows a.row-link:hover span:first-child{color:var(--accent)}
   color:var(--fg);margin:2.75rem 0 .85rem;
   padding:0;border:0;
 }
-.prose h2::before,.prose h2::after{display:none}
+.prose h2::after{display:none}
 .prose h3{
   font-size:1.12rem;font-weight:600;letter-spacing:-.008em;
   margin:2rem 0 .6rem;
