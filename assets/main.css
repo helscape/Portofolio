@@ -15,8 +15,9 @@
  *   RAL 000 20 00 #2b2b2b  slate-black modifiers
  *   RAL 040 80 20 #f1beb0  Olivia pink
  *
- * Pink is darkened for link text on cream so it stays legible; the
- * genuine pink is kept for selections and other soft highlights.
+ * The light accent is a darker pink derived from RAL 040 80 20 so
+ * text stays legible on CP cream; the genuine pink is kept for flat
+ * details such as selections and section rules.
  *
  * Layout is a single column capped at 780px. Below 640px the top bar
  * collapses its navigation links; the brand and theme toggle remain.
@@ -27,7 +28,7 @@
   --fg:#2b2b2b;
   --muted:#5e5851;
   --faint:#8f877c;
-  --accent:#8e3f33;
+  --accent:#a34046;
   --accent-soft:#f1beb0;
   --rule:#c9c1b5;
   --bar:rgba(225,219,209,.82);
@@ -178,7 +179,7 @@ h2{
   color:var(--accent);margin:0 0 1.5rem;
   display:flex;align-items:center;gap:1rem;
 }
-h2::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2::after{content:"";flex:1;height:1px;background:var(--accent-soft)}
 
 /* Work items */
 
