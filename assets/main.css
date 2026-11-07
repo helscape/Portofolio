@@ -191,11 +191,11 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule)}
 }
 .work h3{
   font-size:1.18rem;font-weight:600;margin:0;line-height:1.35;
-  letter-spacing:-.008em;color:var(--accent);
+  letter-spacing:-.008em;
 }
 .work .lang{
   font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
-  font-size:.82rem;color:var(--faint);letter-spacing:.02em;white-space:nowrap;
+  font-size:.82rem;color:var(--accent);letter-spacing:.02em;white-space:nowrap;
 }
 .work p{margin:0;font-size:1.06rem;color:var(--muted);line-height:1.7}
 
@@ -211,7 +211,7 @@ ul.rows li{
 ul.rows li:last-child{border-bottom:0}
 ul.rows li .yr{
   font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
-  font-size:.85rem;color:var(--faint);white-space:nowrap;
+  font-size:.85rem;color:var(--accent);white-space:nowrap;
 }
 ul.rows li .lbl{
   display:block;color:var(--muted);font-size:.92rem;
